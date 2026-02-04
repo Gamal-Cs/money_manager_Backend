@@ -54,13 +54,13 @@ public class Account {
     @Builder.Default
     private boolean active = true;
 
-//    @Builder.Default
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<Transaction> transactions = new HashSet<>();
-//
-//    @Builder.Default
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<Goal> goals = new HashSet<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Transaction> transactions = new HashSet<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Goal> goals = new HashSet<>();
 
     public enum AccountType {
         SAVINGS,

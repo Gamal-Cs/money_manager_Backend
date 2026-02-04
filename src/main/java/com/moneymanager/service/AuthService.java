@@ -7,6 +7,7 @@ import com.moneymanager.dto.auth.LoginRequest;
 import com.moneymanager.dto.auth.RegisterRequest;
 import com.moneymanager.model.User;
 import com.moneymanager.repository.UserRepository;
+import com.moneymanager.security.CustomUserDetails;
 import com.moneymanager.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,15 +44,11 @@ public class AuthService {
 
         User savedUser = userRepository.save(user);
 
-        // Generate token
         String token = jwtUtil.generateToken(
-                new org.springframework.security.core.userdetails.User(
-                        savedUser.getEmail(),
-                        savedUser.getPassword(),
-                        java.util.Collections.emptyList()
+                new CustomUserDetails(
+                        savedUser
                 )
         );
-
         return new AuthResponse(token, convertToUserDTO(savedUser));
     }
 
@@ -68,10 +65,8 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         // Generate token
         String token = jwtUtil.generateToken(
-                new org.springframework.security.core.userdetails.User(
-                        user.getEmail(),
-                        user.getPassword(),
-                        java.util.Collections.emptyList()
+                new CustomUserDetails(
+                        user
                 )
         );
 
@@ -105,5 +100,3 @@ public class AuthService {
         );
     }
 }
-
-// eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0dXNlckBleGFtcGxlLmNvbSIsImlhdCI6MTc2ODc3NjMzNiwiZXhwIjoxNzY4ODYyNzM2fQ.Ly0Gzty4vMk1cK_Yl7PzZeba2eUTKdegD2QoA2pv1tieOIgim1Jt2CrfoMpAyJPksFPGljbA_yKIIpk14cCFBw
